@@ -9,23 +9,23 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Lesson {
+public class SubjectScore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private float score;
 
+    // bi-direction
     @ManyToOne
-    @JoinColumn(name = "classroom_id")
-    private Classroom classroom;
+    @JoinColumn(name = "student_id")
+    private Student student;
 
+    // uni-direction relation
     @ManyToOne
-    @JoinColumn(name = "period_id")
-    private Period period;
+    @JoinColumn(name = "term_id")
+    private Term term;
 
-    @ManyToOne
-    @JoinColumn(name = "teacher_id")
-    private Teacher teacher;
-
+    // uni-direction relation
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private Subject subject;

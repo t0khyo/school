@@ -2,6 +2,7 @@ package com.t0khyo.school.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class Classroom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String roomName;
 
     @ManyToOne
@@ -26,7 +28,7 @@ public class Classroom {
     private Level level;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "classroom", cascade = {CascadeType.PERSIST,CascadeType.DETACH, CascadeType.MERGE,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "classroom", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     private List<Student> students;
 
     @OneToMany(mappedBy = "classroom")
@@ -36,7 +38,7 @@ public class Classroom {
         this.roomName = roomName;
     }
 
-    public void addStudent(Student student){
+    public void addStudent(Student student) {
         if (students == null) {
             students = new ArrayList<>();
         }

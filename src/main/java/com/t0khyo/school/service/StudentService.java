@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,6 +20,9 @@ public class StudentService {
 
     public void  createStudent(Student student) {
         student.setId(0L);
+        if (student.getEnrollmentDate() == null){
+            student.setEnrollmentDate(LocalDate.now());
+        }
         repository.save(student);
     }
 
@@ -32,7 +36,7 @@ public class StudentService {
     }
 
     public Page<Student> getStudentsWithPagination(int pageNumber, int pageSize) {
-        return repository.findAll(PageRequest.of(pageNumber, pageSize));
+        return repository.findAll(PageRequest.of(pageNumber, pageSize,Sort.Direction.ASC));
     }
 
     public Page<Student> getStudentsWithPaginationAndSort(int pageNumber, int pageSize, String sortDirection) {
@@ -51,8 +55,8 @@ public class StudentService {
         }
     }
 
-    public List<Student> searchStudentsByKeyword(String keyword) {
-        return repository.findByFirstNameContainingOrMiddleNameContainingOrLasNameContaining(keyword);
+    public List<Student> searchStudentsByKeyword(String nameKeyword, int pageSize, int pageNumber) {
+        return repository.searchStudentsByName(nameKeyword, PageRequest.of(pageSize,pageSize, Sort.Direction.ASC));
     }
 
     @Transactional
@@ -73,6 +77,10 @@ public class StudentService {
 
         if (student.getBirthdate() != null) {
             existingStudent.setBirthdate(student.getBirthdate());
+        }
+
+        if (student.getEnrollmentDate() != null) {
+            existingStudent.setEnrollmentDate(student.getEnrollmentDate());
         }
 
         if (student.getGraduationYear() != 0) {

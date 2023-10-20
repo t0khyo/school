@@ -1,6 +1,7 @@
 package com.t0khyo.school.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ public class SubjectScore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Min(value = 0, message = "Score cannot be less than 0")
     private float score;
 
     // bi-direction

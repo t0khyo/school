@@ -1,6 +1,7 @@
 package com.t0khyo.school.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,7 +21,9 @@ public class AcademicYear {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull(message = "Start date is required")
     private LocalDate start_date;
+    @NotNull(message = "End date is required")
     private LocalDate end_date;
 
     public AcademicYear(LocalDate start_date, LocalDate end_date) {

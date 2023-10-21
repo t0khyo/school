@@ -57,8 +57,8 @@ public class StudentService {
         }
     }
 
-    public List<Student> searchStudentsByName(String nameKeyword, int pageSize, int pageNumber) {
-        return studentRepository.searchStudentsByName(nameKeyword, PageRequest.of(pageSize, pageSize, Sort.Direction.ASC));
+    public List<Student> searchStudentsByName(String nameKeyword) {
+        return studentRepository.searchStudentsByName(nameKeyword);
     }
 
     @Transactional

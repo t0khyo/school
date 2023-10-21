@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -45,9 +44,6 @@ public class Student {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "classroom_id")
     private Classroom classroom;
-
-    @OneToMany(mappedBy = "student")
-    private List<SubjectScore> scores;
 
     public Student(String firstName, String middleName, String lastName, LocalDate birthdate, LocalDate enrollmentDate, short graduationYear) {
         this.firstName = firstName;

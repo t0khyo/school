@@ -12,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class TeacherService {
@@ -79,5 +81,9 @@ public class TeacherService {
                 .orElseThrow(() -> new EntityNotFoundException("Teacher with ID " + teacherId + " not found."));
 
         teacherRepository.deleteById(teacherId);
+    }
+
+    public List<Teacher> serchTeacherByName(String nameKeyword) {
+        return teacherRepository.searchTeachersByName(nameKeyword);
     }
 }

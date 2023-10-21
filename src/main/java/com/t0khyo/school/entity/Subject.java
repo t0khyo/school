@@ -1,14 +1,15 @@
 package com.t0khyo.school.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -32,9 +33,6 @@ public class Subject {
 
     @Min(value = 0, message = "Minimum score must be a non-negative number")
     private int minScore;
-
-    @OneToMany(mappedBy = "subject")
-    private List<Teacher> teachers;
 
     public Subject(String subjectName, String departmentName, int maxScore, int minScore) {
         this.subjectName = subjectName;

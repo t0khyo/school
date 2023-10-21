@@ -17,6 +17,10 @@ public class Period {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull(message = "Period order is required")
+    private short periodOrder;
+
     @NotNull(message = "Start time is required")
     private Time startTime;
 

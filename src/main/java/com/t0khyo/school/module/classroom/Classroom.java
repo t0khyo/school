@@ -1,5 +1,6 @@
 package com.t0khyo.school.module.classroom;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.t0khyo.school.module.lesson.Lesson;
 import com.t0khyo.school.module.student.Student;
 import jakarta.persistence.*;
@@ -38,6 +39,7 @@ public class Classroom {
     private Section section;
 
     @OneToMany(mappedBy = "classroom", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JsonIgnoreProperties(value = {"classroom","enrollmentDate","birthdate","graduationYear"})
     private List<Student> students;
 
     @OneToMany(mappedBy = "classroom")

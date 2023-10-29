@@ -57,7 +57,7 @@ public class ClassroomController {
     }
 
     @GetMapping("/findByLevelAndOrderAndSection")
-    public ResponseEntity<Classroom> searchClassroom(@Valid @RequestBody Classroom classroom) {
+    public ResponseEntity<Classroom> searchClassroom( @RequestBody Classroom classroom) {
         Classroom result = classroomService.findByLevelAndOrderAndSection(classroom);
         if (result == null) {
             return ResponseEntity.notFound().build();

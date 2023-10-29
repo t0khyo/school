@@ -21,11 +21,11 @@ public class Subject {
     private Long id;
 
     @NotBlank(message = "Subject name is required")
-    @Size(max = 100, message = "Subject name cannot exceed 100 characters")
+    @Size(max = 35, message = "Subject name cannot exceed 35 characters")
     private String subjectName;
 
     @NotBlank(message = "Department name is required")
-    @Size(max = 100, message = "Department name cannot exceed 100 characters")
+    @Size(max = 35, message = "Department name cannot exceed 35 characters")
     private String departmentName;
 
     @Min(value = 0, message = "Maximum score must be a non-negative number")

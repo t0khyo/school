@@ -1,11 +1,11 @@
 package com.t0khyo.school.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,10 +37,10 @@ public class Student {
     private LocalDate enrollmentDate;
 
     @NotNull(message = "Graduation year is required.")
-    @Size(min = 4, max = 4, message = "Graduation year should be a 4-digit year.")
-    private short graduationYear;
+    @Digits(integer = 4, fraction = 0, message = "Graduation year should be a 4-digit year.")
+    private Short graduationYear;
 
-    @JsonBackReference
+    @JsonIgnoreProperties("students")
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "classroom_id")
     private Classroom classroom;

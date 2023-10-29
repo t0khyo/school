@@ -21,17 +21,17 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final ClassroomRepository classroomRepository;
 
-    public void createStudent(Student student) {
+    public Student createStudent(Student student) {
         student.setId(0L);
-        if (student.getEnrollmentDate() == null) {
+        if (student.getEnrollmentDate() == null) { // todo
             student.setEnrollmentDate(LocalDate.now());
         }
         if (student.getClassroom() != null) {
             Classroom theClassroom = classroomRepository.findById(student.getClassroom().getId())
-                    .orElseThrow(() -> new EntityNotFoundException("Student with ID " + student.getClassroom().getId() + " not found"));
+                    .orElseThrow(() -> new EntityNotFoundException("Class with ID " + student.getClassroom().getId() + " not found"));
             student.setClassroom(theClassroom);
         }
-        studentRepository.save(student);
+        return studentRepository.save(student);
     }
 
     public Student getStudentById(Long studentId) {
@@ -57,8 +57,8 @@ public class StudentService {
         }
     }
 
-    public List<Student> searchStudentsByName(String nameKeyword) {
-        return studentRepository.searchStudentsByName(nameKeyword);
+    public List<Student> searchStudentsByName(String nameKeyword, int pageNumber, int pageSize) {
+        return studentRepository.searchStudentsByName(nameKeyword, PageRequest.of(pageNumber, pageSize));
     }
 
     @Transactional
@@ -85,7 +85,7 @@ public class StudentService {
             existingStudent.setEnrollmentDate(student.getEnrollmentDate());
         }
 
-        if (student.getGraduationYear() != 0) {
+        if (student.getGraduationYear() != null) {
             existingStudent.setGraduationYear(student.getGraduationYear());
         }
 

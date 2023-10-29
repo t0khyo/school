@@ -25,13 +25,13 @@ public class ClassroomService {
     private final LevelRepository levelRepository;
     private final StudentRepository studentRepository;
 
-    public void createClassroom(Classroom classroom) {
+    public Classroom createClassroom(Classroom classroom) {
         classroom.setId(0L);
         if (classroom.getLevel() != null) {
             levelRepository.findById(classroom.getLevel().getId())
                     .orElseThrow(() -> new EntityNotFoundException("Level with id: " + classroom.getLevel().getId() + " not found."));
         }
-        classroomRepository.save(classroom);
+        return classroomRepository.save(classroom);
     }
 
     public Classroom getClassroomById(long classroomId) {
@@ -39,7 +39,7 @@ public class ClassroomService {
                 .orElseThrow(() -> new EntityNotFoundException("Classroom with id: " + classroomId + " not found."));
     }
 
-    public Page<Classroom> getAllClassroomsWithPaginationAndSort(int pageSize, int pageNumber, String sortDirection) {
+    public Page<Classroom> getAllClassroomsWithPaginationAndSort(int pageNumber, int pageSize, String sortDirection) {
         if ("ASC".equalsIgnoreCase(sortDirection) || "DESC".equalsIgnoreCase(sortDirection)) {
             Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), "roomName");
             PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
@@ -50,7 +50,7 @@ public class ClassroomService {
     }
 
     @Transactional
-    public Classroom updateClassroom(Classroom classroom) {
+    public void updateClassroom(Classroom classroom) {
         Classroom existingClassroom = classroomRepository.findById(classroom.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Classroom with ID " + classroom.getId() + " not found"));
 
@@ -64,7 +64,6 @@ public class ClassroomService {
             existingClassroom.setLevel(existingLevel);
         }
 
-        return classroomRepository.save(existingClassroom);
     }
 
     public void deleteClassroom(long classroomId) {

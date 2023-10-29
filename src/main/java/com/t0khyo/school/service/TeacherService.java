@@ -20,14 +20,14 @@ public class TeacherService {
     private final TeacherRepository teacherRepository;
     private final SubjectRepository subjectRepository;
 
-    private void createTeacher(Teacher teacher) {
+    public Teacher createTeacher(Teacher teacher) {
         teacher.setId(0L);
         if (teacher.getSubject() != null) {
             Subject theSubject = subjectRepository.findById(teacher.getSubject().getId())
                     .orElseThrow(() -> new EntityNotFoundException("Subject with ID " + teacher.getSubject().getId() + " not found."));
             teacher.setSubject(theSubject);
         }
-        teacherRepository.save(teacher);
+        return teacherRepository.save(teacher);
     }
 
     public Teacher getTeacherById(long teacherId) {
@@ -46,7 +46,7 @@ public class TeacherService {
     }
 
     @Transactional
-    public void updateTeacher(Teacher teacher) {
+    public Teacher updateTeacher(Teacher teacher) {
         Teacher existingTeacher = teacherRepository.findById(teacher.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Teacher with ID " + teacher.getId() + " not found"));
 
@@ -74,6 +74,7 @@ public class TeacherService {
                     .orElseThrow(() -> new EntityNotFoundException("Subject with ID " + teacher.getSubject().getId() + " not found."));
             existingTeacher.setSubject(newSubject);
         }
+        return existingTeacher;
     }
 
     public void deleteTeacher(long teacherId) {

@@ -12,7 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/classroom")
+@RequestMapping("/api/v1/classrooms")
 public class ClassroomController {
     private final ClassroomService classroomService;
 
@@ -56,9 +56,13 @@ public class ClassroomController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Classroom>> searchClassroomByName(String nameKeyword) {
-        return ResponseEntity.ok(classroomService.searchByClassroomName(nameKeyword));
+    @GetMapping("/findByLevelAndOrderAndSection")
+    public ResponseEntity<Classroom> searchClassroom(@Valid @RequestBody Classroom classroom) {
+        Classroom result = classroomService.findByLevelAndOrderAndSection(classroom);
+        if (result == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/add-students/{classroomId}")

@@ -21,6 +21,9 @@ public class ClassroomService {
 
     public Classroom createClassroom(Classroom classroom) {
         classroom.setId(0L);
+        if (classroom.getLevel() < 10) {
+            classroom.setSection(Section.GENERAL);
+        }
         return classroomRepository.save(classroom);
     }
 
@@ -31,7 +34,7 @@ public class ClassroomService {
 
     public Page<Classroom> getAllClassroomsWithPaginationAndSort(int pageNumber, int pageSize, String sortDirection) {
         if ("ASC".equalsIgnoreCase(sortDirection) || "DESC".equalsIgnoreCase(sortDirection)) {
-            Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), "roomName");
+            Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), "level", "classroomOrder");
             PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
             return classroomRepository.findAll(pageRequest);
         } else {
@@ -40,19 +43,17 @@ public class ClassroomService {
     }
 
     @Transactional
-    public Classroom updateClassroom(Classroom classroom) {
+    public void updateClassroom(Classroom classroom) {
         Classroom existingClassroom = classroomRepository.findById(classroom.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Classroom with ID " + classroom.getId() + " not found"));
 
-        if (classroom.getRoomName() != null && !classroom.getRoomName().isBlank()) {
-            existingClassroom.setRoomName(classroom.getRoomName());
+        if (classroom.getClassroomOrder() != null) {
+            existingClassroom.setClassroomOrder(classroom.getClassroomOrder());
         }
 
         if (classroom.getLevel() != null) {
             existingClassroom.setLevel(classroom.getLevel());
         }
-
-        return existingClassroom;
     }
 
     public void deleteClassroom(long classroomId) {
@@ -61,8 +62,11 @@ public class ClassroomService {
         classroomRepository.delete(classroom);
     }
 
-    public List<Classroom> searchByClassroomName(String nameKeyword) {
-        return classroomRepository.findByRoomNameContaining(nameKeyword);
+    public Classroom findByLevelAndOrderAndSection(Classroom classroom) {
+        return classroomRepository.findByLevelAndClassroomOrderAndSection(
+                classroom.getLevel(),
+                classroom.getClassroomOrder(),
+                classroom.getSection());
     }
 
     public List<Student> addStudentsToClassroom(long classroomId, List<Long> studentIds) {

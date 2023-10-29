@@ -1,10 +1,10 @@
 package com.t0khyo.school.module.classroom;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.t0khyo.school.module.lesson.Lesson;
 import com.t0khyo.school.module.student.Student;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,27 +18,33 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"level", "classroomOrder", "section"}))
 public class Classroom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Classroom name must not be blank.")
-    private String roomName;
+    @NotNull(message = "Classroom level must not be null.")
+    @Max(12)
+    @Min(1)
+    private Byte level;
+
+    @NotNull(message = "Classroom order must not be blank.")
+    private Character classroomOrder;
 
     @NotNull(message = "Classroom level must not be null.")
-    @Enumerated(value = EnumType.STRING)
-    private GradeLevel level;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 16)
+    private Section section;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "classroom", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     private List<Student> students;
 
     @OneToMany(mappedBy = "classroom")
     private List<Lesson> lessons;
 
-    public Classroom(String roomName) {
-        this.roomName = roomName;
+    public Classroom(Character classroomOrder) {
+        this.classroomOrder = classroomOrder;
     }
 
     public void addStudent(Student student) {

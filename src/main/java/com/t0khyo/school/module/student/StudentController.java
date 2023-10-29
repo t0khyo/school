@@ -71,7 +71,7 @@ public class StudentController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/search")
+    @GetMapping("/findByLevelAndOrderAndSection")
     public ResponseEntity<List<Student>> searchStudentByName(@RequestParam String nameKeyword,
                                                              @RequestParam(defaultValue = "0") int pageNumber,
                                                              @RequestParam(defaultValue = "10") int pageSize) {

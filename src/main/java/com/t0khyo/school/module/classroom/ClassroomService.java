@@ -48,8 +48,8 @@ public class ClassroomService {
             existingClassroom.setRoomName(classroom.getRoomName());
         }
 
-        if (classroom.getGradeLevel() != null) {
-            existingClassroom.setGradeLevel(classroom.getGradeLevel());
+        if (classroom.getLevel() != null) {
+            existingClassroom.setLevel(classroom.getLevel());
         }
 
         return existingClassroom;

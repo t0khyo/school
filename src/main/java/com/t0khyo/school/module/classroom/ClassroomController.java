@@ -1,6 +1,6 @@
 package com.t0khyo.school.module.classroom;
 
-import com.t0khyo.school.DTO.StudentIdsDTO;
+import com.t0khyo.school.module.student.Student;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -62,14 +62,13 @@ public class ClassroomController {
     }
 
     @PostMapping("/add-students/{classroomId}")
-    public ResponseEntity<Void> addStudentsToClassroom(@PathVariable long classroomId, @RequestBody StudentIdsDTO studentIdsDTO) {
-        classroomService.addStudentsToClassroom(classroomId,studentIdsDTO);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<List<Student>> addStudentsToClassroom(@PathVariable long classroomId, @RequestBody List<Long> studentIds) {
+        return ResponseEntity.ok(classroomService.addStudentsToClassroom(classroomId, studentIds));
     }
 
     @DeleteMapping("/remove-students/{classroomId}")
-    public ResponseEntity<Void>  removeStudentsToClassroom(@PathVariable long classroomId, @RequestBody StudentIdsDTO studentIdsDTO) {
-        classroomService.removeStudentsFromClassroom(classroomId,studentIdsDTO);
+    public ResponseEntity<Void> removeStudentsFromClassroom(@PathVariable long classroomId, @RequestBody List<Long> studentIds) {
+        classroomService.removeStudentsFromClassroom(classroomId, studentIds);
         return ResponseEntity.ok().build();
     }
 }

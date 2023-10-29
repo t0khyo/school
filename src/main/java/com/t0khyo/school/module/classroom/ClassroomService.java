@@ -1,9 +1,6 @@
 package com.t0khyo.school.module.classroom;
 
-import com.t0khyo.school.DTO.StudentIdsDTO;
-import com.t0khyo.school.module.level.Level;
 import com.t0khyo.school.module.student.Student;
-import com.t0khyo.school.module.level.LevelRepository;
 import com.t0khyo.school.module.student.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -20,15 +17,10 @@ import java.util.List;
 @Service
 public class ClassroomService {
     private final ClassroomRepository classroomRepository;
-    private final LevelRepository levelRepository;
     private final StudentRepository studentRepository;
 
     public Classroom createClassroom(Classroom classroom) {
         classroom.setId(0L);
-        if (classroom.getLevel() != null) {
-            levelRepository.findById(classroom.getLevel().getId())
-                    .orElseThrow(() -> new EntityNotFoundException("Level with id: " + classroom.getLevel().getId() + " not found."));
-        }
         return classroomRepository.save(classroom);
     }
 
@@ -48,7 +40,7 @@ public class ClassroomService {
     }
 
     @Transactional
-    public void updateClassroom(Classroom classroom) {
+    public Classroom updateClassroom(Classroom classroom) {
         Classroom existingClassroom = classroomRepository.findById(classroom.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Classroom with ID " + classroom.getId() + " not found"));
 
@@ -56,12 +48,11 @@ public class ClassroomService {
             existingClassroom.setRoomName(classroom.getRoomName());
         }
 
-        if (classroom.getLevel() != null) {
-            Level existingLevel = levelRepository.findById(classroom.getLevel().getId())
-                    .orElseThrow(() -> new EntityNotFoundException("Level with ID " + classroom.getLevel().getId() + " not found."));
-            existingClassroom.setLevel(existingLevel);
+        if (classroom.getGradeLevel() != null) {
+            existingClassroom.setGradeLevel(classroom.getGradeLevel());
         }
 
+        return existingClassroom;
     }
 
     public void deleteClassroom(long classroomId) {
@@ -74,11 +65,10 @@ public class ClassroomService {
         return classroomRepository.findByRoomNameContaining(nameKeyword);
     }
 
-    public void addStudentsToClassroom(long classroomId, StudentIdsDTO studentIdsDTO) {
+    public List<Student> addStudentsToClassroom(long classroomId, List<Long> studentIds) {
         Classroom classroom = classroomRepository.findById(classroomId)
                 .orElseThrow(() -> new EntityNotFoundException("Classroom with ID " + classroomId + " not found."));
 
-        List<Long> studentIds = studentIdsDTO.studentIds();
         List<Student> savedStudents = new ArrayList<>();
 
         for (Long studentId : studentIds) {
@@ -90,13 +80,13 @@ public class ClassroomService {
 
         classroom.getStudents().addAll(savedStudents);
         classroomRepository.save(classroom);
+
+        return savedStudents;
     }
 
-    public void removeStudentsFromClassroom(long classroomId, StudentIdsDTO studentIdsDTO) {
+    public void removeStudentsFromClassroom(long classroomId, List<Long> studentIds) {
         Classroom classroom = classroomRepository.findById(classroomId)
                 .orElseThrow(() -> new EntityNotFoundException("Classroom with ID " + classroomId + " not found."));
-
-        List<Long> studentIds = studentIdsDTO.studentIds();
 
         for (Long studentId : studentIds) {
             Student student = studentRepository.findById(studentId)

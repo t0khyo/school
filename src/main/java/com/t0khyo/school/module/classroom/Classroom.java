@@ -2,10 +2,10 @@ package com.t0khyo.school.module.classroom;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.t0khyo.school.module.lesson.Lesson;
-import com.t0khyo.school.module.level.Level;
 import com.t0khyo.school.module.student.Student;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,12 +23,12 @@ public class Classroom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Classroom name must not be blank.")
     private String roomName;
 
-    @ManyToOne
-    @JoinColumn(name = "level_id")
-    private Level level;
+    @NotNull(message = "Classroom level must not be null.")
+    @Enumerated(value = EnumType.STRING)
+    private GradeLevel level;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "classroom", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})

@@ -62,13 +62,6 @@ public class ClassroomService {
         classroomRepository.delete(classroom);
     }
 
-    public Classroom findByLevelAndOrderAndSection(Classroom classroom) {
-        return classroomRepository.findByLevelAndClassroomOrderAndSection(
-                classroom.getLevel(),
-                classroom.getClassroomOrder(),
-                classroom.getSection());
-    }
-
     public List<Student> addStudentsToClassroom(long classroomId, List<Long> studentIds) {
         Classroom classroom = classroomRepository.findById(classroomId)
                 .orElseThrow(() -> new EntityNotFoundException("Classroom with ID " + classroomId + " not found."));
@@ -103,6 +96,20 @@ public class ClassroomService {
         }
 
         classroomRepository.save(classroom);
+    }
+
+    public Classroom getByLevelAndOrderAndSection(Classroom classroom) {
+        return classroomRepository.findByLevelAndClassroomOrderAndSection(
+                        classroom.getLevel(),
+                        classroom.getClassroomOrder(),
+                        classroom.getSection())
+                .orElseThrow(() -> {
+                    String errorMessage = String.format("Classroom with Level '%d', Order '%c', and Section '%s' not found",
+                            classroom.getLevel(),
+                            classroom.getClassroomOrder(),
+                            classroom.getSection());
+                    return new EntityNotFoundException(errorMessage);
+                });
     }
 
 }

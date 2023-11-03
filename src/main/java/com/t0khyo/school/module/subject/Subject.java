@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -28,16 +27,8 @@ public class Subject {
     @Size(max = 35, message = "Department name cannot exceed 35 characters")
     private String departmentName;
 
-    @Min(value = 0, message = "Maximum score must be a non-negative number")
-    private int maxScore;
-
-    @Min(value = 0, message = "Minimum score must be a non-negative number")
-    private int minScore;
-
-    public Subject(String subjectName, String departmentName, int maxScore, int minScore) {
+    public Subject(String subjectName, String departmentName) {
         this.subjectName = subjectName;
         this.departmentName = departmentName;
-        this.maxScore = maxScore;
-        this.minScore = minScore;
     }
 }

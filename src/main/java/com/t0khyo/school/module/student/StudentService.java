@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -55,12 +54,12 @@ public class StudentService {
         }
     }
 
-    public List<Student> searchStudentsByName(String nameKeyword, int pageNumber, int pageSize) {
+    public Page<Student> searchStudentsByName(String nameKeyword, int pageNumber, int pageSize) {
         return studentRepository.searchStudentsByName(nameKeyword, PageRequest.of(pageNumber, pageSize));
     }
 
     @Transactional
-    public Student updateStudent(Student student) {
+    public void updateStudent(Student student) {
         Student existingStudent = studentRepository.findById(student.getId()).orElseThrow(() -> new EntityNotFoundException("Student with ID " + student.getId() + " not found"));
 
         if (student.getFirstName() != null && !student.getFirstName().isBlank()) {
@@ -93,7 +92,6 @@ public class StudentService {
             existingStudent.setClassroom(student.getClassroom());
         }
 
-        return existingStudent;
     }
 
     public void deleteStudent(long studentId) {

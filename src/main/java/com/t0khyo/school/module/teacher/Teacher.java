@@ -1,14 +1,11 @@
 package com.t0khyo.school.module.teacher;
 
-import com.t0khyo.school.module.lesson.Lesson;
 import com.t0khyo.school.module.subject.Subject;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -39,9 +36,6 @@ public class Teacher {
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private Subject subject;
-
-    @OneToMany(mappedBy = "teacher")
-    private List<Lesson> lessons;
 
     public Teacher(String firstName, String lastName, String gender, String email, String phone) {
         this.firstName = firstName;

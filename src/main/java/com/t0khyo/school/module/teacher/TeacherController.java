@@ -2,6 +2,7 @@ package com.t0khyo.school.module.teacher;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,16 +26,29 @@ public class TeacherController {
     }
 
     @GetMapping(value = {"/", ""})
-    public ResponseEntity<List<Teacher>> getTeachersWithPaginationAndSort(@RequestParam(defaultValue = "0") int pageNumber,
-                                                                          @RequestParam(defaultValue = "10") int pageSize,
-                                                                          @RequestParam(defaultValue = "ASC") String sortDirection) {
-        List<Teacher> teachers = teacherService.getAllTeachersWithPagenation(pageNumber, pageSize, sortDirection).getContent();
+    public ResponseEntity<List<Teacher>> getAllTeachersWithPaginationAndSort(@RequestParam(defaultValue = "0") int pageNumber,
+                                                                             @RequestParam(defaultValue = "10") int pageSize,
+                                                                             @RequestParam(defaultValue = "ASC") String sortDirection) {
+        List<Teacher> teachers = teacherService.getAllTeachersWithPagination(pageNumber, pageSize, sortDirection).getContent();
         return ResponseEntity.ok(teachers);
     }
 
     @PutMapping(value = {"/", ""})
-    public ResponseEntity<Teacher> updateTeacher(Teacher teacher) {
+    public ResponseEntity<Teacher> updateTeacher(@RequestParam Teacher teacher) {
         teacherService.updateTeacher(teacher);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<Teacher>> searchTeacherByName(@RequestParam String nameKeyword,
+                                                             @RequestParam(defaultValue = "0") int pageNumber,
+                                                             @RequestParam(defaultValue = "10") int pageSize) {
+        return ResponseEntity.ok(teacherService.searchTeacherByName(nameKeyword, pageNumber, pageSize));
+    }
+
+    @DeleteMapping("/{teacherId}")
+    public ResponseEntity<Void> deleteTeacher(@PathVariable long teacherId) {
+        teacherService.deleteTeacher(teacherId);
         return ResponseEntity.noContent().build();
     }
 }

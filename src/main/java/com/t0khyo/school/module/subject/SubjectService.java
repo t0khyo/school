@@ -18,9 +18,9 @@ public class SubjectService {
     private final SubjectRepository subjectRepository;
     private final TeacherRepository teacherRepository;
 
-    public Subject createSubject(Subject subject) {
+    public void createSubject(Subject subject) {
         subject.setId(0L);
-        return subjectRepository.save(subject);
+        subjectRepository.save(subject);
     }
 
     public Subject getSubjectById(Long subjectId) {
@@ -28,16 +28,12 @@ public class SubjectService {
                 .orElseThrow(() -> new EntityNotFoundException("Subject with ID " + subjectId + " not found"));
     }
 
-    public List<Subject> getAllSubjects() {
-        return subjectRepository.findAll();
-    }
-
-    public Page<Subject> getSubjectsWithPagination(int pageNumber, int pageSize) {
+    public Page<Subject> getAllSubjectsWithPagination(int pageNumber, int pageSize) {
         return subjectRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, "subjectName"));
     }
 
     @Transactional
-    public Subject updateSubject(Subject subject) {
+    public void updateSubject(Subject subject) {
         Subject existingSubject = subjectRepository.findById(subject.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Subject with ID " + subject.getId() + " not found"));
 
@@ -48,16 +44,6 @@ public class SubjectService {
         if (subject.getDepartmentName() != null && !subject.getDepartmentName().isBlank()) {
             existingSubject.setDepartmentName(subject.getDepartmentName());
         }
-
-        if (subject.getMaxScore() >= 0) {
-            existingSubject.setMaxScore(subject.getMaxScore());
-        }
-
-        if (subject.getMinScore() >= 0) {
-            existingSubject.setMinScore(subject.getMinScore());
-        }
-
-        return existingSubject;
     }
 
     public void deleteSubject(long subjectId) {
@@ -66,12 +52,12 @@ public class SubjectService {
         subjectRepository.delete(subject);
     }
 
-    public List<Subject> searchSubjectsBySubjectName(String subjectName) {
-        return subjectRepository.findBySubjectNameContaining(subjectName);
+    public Page<Subject> searchSubjectsBySubjectName(String subjectName, int pageNumber, int pageSize) {
+        return subjectRepository.findBySubjectNameContaining(subjectName, PageRequest.of(pageNumber, pageSize));
     }
 
-    public List<Teacher> getSubjectTeachers(long subjectId){
-        Subject theSubject = subjectRepository.findById(subjectId).orElseThrow(()-> new EntityNotFoundException("Subject with ID " + subjectId + " not found."));
+    public List<Teacher> getSubjectTeachers(long subjectId) {
+        Subject theSubject = subjectRepository.findById(subjectId).orElseThrow(() -> new EntityNotFoundException("Subject with ID " + subjectId + " not found."));
         return teacherRepository.findBySubject(theSubject);
     }
 }

@@ -33,7 +33,7 @@ public class Classroom {
     @NotNull(message = "Classroom order must not be blank.")
     private Character classroomOrder;
 
-    @NotNull(message = "Classroom level must not be null.")
+    //@NotNull(message = "Classroom Section must not be null.")
     @Enumerated(EnumType.STRING)
     @Column(length = 16)
     private Section section;

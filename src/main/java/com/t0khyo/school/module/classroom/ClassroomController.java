@@ -3,11 +3,11 @@ package com.t0khyo.school.module.classroom;
 import com.t0khyo.school.module.student.Student;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,18 +24,17 @@ public class ClassroomController {
 
     @PostMapping("/create-multiple")
     public ResponseEntity<Void> createMultipleClassrooms(@RequestBody List<Classroom> classrooms) {
-        List<Classroom> createdClassrooms = new ArrayList<>();
         for (Classroom classroom : classrooms) {
-            createdClassrooms.add(classroomService.createClassroom(classroom));
+            classroomService.createClassroom(classroom);
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping(value = {"/", ""})
-    public ResponseEntity<List<Classroom>> getAllClassroomsWithPaginationAndSort(@RequestParam(defaultValue = "0") int pageNumber,
+    public ResponseEntity<Page<Classroom>> getAllClassroomsWithPaginationAndSort(@RequestParam(defaultValue = "0") int pageNumber,
                                                                                  @RequestParam(defaultValue = "10") int pageSize,
                                                                                  @RequestParam(defaultValue = "ASC") String sortDirection) {
-        List<Classroom> classrooms = classroomService.getAllClassroomsWithPaginationAndSort(pageNumber, pageSize, sortDirection).getContent();
+        Page<Classroom> classrooms = classroomService.getAllClassroomsWithPaginationAndSort(pageNumber, pageSize, sortDirection);
         return ResponseEntity.ok(classrooms);
     }
 
@@ -56,9 +55,9 @@ public class ClassroomController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/findByLevelAndOrderAndSection")
-    public ResponseEntity<Classroom> searchClassroom( @RequestBody Classroom classroom) {
-        Classroom result = classroomService.findByLevelAndOrderAndSection(classroom);
+    @GetMapping("/getByLevelAndOrderAndSection")
+    public ResponseEntity<Classroom> searchClassroom(@RequestBody Classroom classroom) {
+        Classroom result = classroomService.getByLevelAndOrderAndSection(classroom);
         if (result == null) {
             return ResponseEntity.notFound().build();
         }

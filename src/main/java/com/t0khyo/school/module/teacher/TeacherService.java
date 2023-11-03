@@ -10,8 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Service
 public class TeacherService {
@@ -33,7 +31,7 @@ public class TeacherService {
                 .orElseThrow(() -> new EntityNotFoundException("Teacher with id: " + teacherId + " not found."));
     }
 
-    public Page<Teacher> getAllTeachersWithPagenation(int pageNumber, int pageSize, String sortDirection) {
+    public Page<Teacher> getAllTeachersWithPagination(int pageNumber, int pageSize, String sortDirection) {
         if ("ASC".equalsIgnoreCase(sortDirection) || "DESC".equalsIgnoreCase(sortDirection)) {
             Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), "firstName", "lastName");
             PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
@@ -82,7 +80,7 @@ public class TeacherService {
         teacherRepository.deleteById(teacherId);
     }
 
-    public List<Teacher> serchTeacherByName(String nameKeyword) {
-        return teacherRepository.searchTeachersByName(nameKeyword);
+    public Page<Teacher> searchTeacherByName(String nameKeyword, int pageNumber, int pageSize) {
+        return teacherRepository.searchTeachersByName(nameKeyword, PageRequest.of(pageNumber, pageSize));
     }
 }

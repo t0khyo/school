@@ -35,7 +35,7 @@ public class ClassroomService {
                 .orElseThrow(() -> new EntityNotFoundException("Classroom with id: " + classroomId + " not found."));
     }
 
-    public List<Classroom> getAllClassrooms(){
+    public List<Classroom> getAllClassrooms() {
         return classroomRepository.findAll();
     }
 

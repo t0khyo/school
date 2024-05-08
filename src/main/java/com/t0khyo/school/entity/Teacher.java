@@ -29,7 +29,7 @@ public class Teacher {
 
     @Pattern(regexp = "^(\\+\\d+|\\d+)$",
             message = "Phone number must be a valid number or start with a plus sign followed by numbers")
-    @Size(min = 8, max = 15, message = "Phone number must be between 5 and 15 characters")
+    @Size(min = 8, max = 15, message = "Phone number must be between 8 and 15 characters")
     private String phone;
 
     @ManyToOne

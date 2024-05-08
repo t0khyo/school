@@ -2,9 +2,6 @@ package com.t0khyo.school.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,21 +20,21 @@ public class Classroom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Classroom level must not be null.")
-    @Max(12)
-    @Min(1)
+//    @NotNull(message = "Classroom level must not be null.")
+//    @Max(12)
+//    @Min(1)
     private int level;
 
-    @NotNull(message = "Classroom order must not be blank.")
+//    @NotNull(message = "Classroom order must not be blank.")
     private Character classroomOrder;
 
-    @NotNull(message = "Classroom Section must not be null.")
+//    @NotNull(message = "Classroom Section must not be null.")
     @Enumerated(EnumType.STRING)
     @Column(length = 16)
     private Section section;
 
     @OneToMany(mappedBy = "classroom", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = {"classroom","enrollmentDate","birthdate","graduationYear"})
+    @JsonIgnoreProperties(value = {"classroom", "enrollmentDate", "birthdate", "graduationYear"})
     private List<Student> students;
 
     @OneToMany(mappedBy = "classroom")

@@ -1,5 +1,7 @@
 package com.t0khyo.school.controller;
 
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import com.t0khyo.school.entity.Student;
 import com.t0khyo.school.service.StudentService;
 import jakarta.validation.Valid;
@@ -8,8 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/students")
@@ -20,14 +20,6 @@ public class StudentController {
     @PostMapping(value = {"/", ""})
     public ResponseEntity<Void> createStudent(@Valid @RequestBody Student student) {
         studentService.createStudent(student);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @PostMapping("/create-multiple")
-    public ResponseEntity<Void> createMultipleStudents(@RequestBody List<Student> students) {
-        for (Student student : students) {
-            studentService.createStudent(student);
-        }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -50,16 +42,22 @@ public class StudentController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("studentId")
+    @PatchMapping(path = "/{studentId}", consumes = "application/json-patch+json")
+    ResponseEntity<Student> updateStudentPartially(@PathVariable long studentId, @RequestBody JsonPatch jsonPatch)
+            throws JsonPatchException {
+        return ResponseEntity.ok(studentService.updateStudentPartially(studentId, jsonPatch));
+    }
+
+    @DeleteMapping( "/{studentId}")
     public ResponseEntity<Void> deleteStudent(@PathVariable long studentId) {
         studentService.deleteStudent(studentId);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/getByLevelAndOrderAndSection")
-    public ResponseEntity<Page<Student>> searchStudentByName(@RequestParam String nameKeyword,
+    @GetMapping("/search")
+    public ResponseEntity<Page<Student>> searchStudentByName(@RequestParam String keyword,
                                                              @RequestParam(defaultValue = "0") int pageNumber,
                                                              @RequestParam(defaultValue = "10") int pageSize) {
-        return ResponseEntity.ok(studentService.searchStudentsByName(nameKeyword, pageNumber, pageSize));
+        return ResponseEntity.ok(studentService.searchStudentsByName(keyword, pageNumber, pageSize));
     }
 }

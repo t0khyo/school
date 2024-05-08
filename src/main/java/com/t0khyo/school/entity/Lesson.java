@@ -22,7 +22,7 @@ public class Lesson {
 
     @ManyToOne
     @JoinColumn(name = "classroom_id")
-    @JsonIgnoreProperties(value = {"lessons","students"})
+    @JsonIgnoreProperties(value = {"lessons", "students"})
     private Classroom classroom;
 
     @NotNull
@@ -35,7 +35,7 @@ public class Lesson {
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
-    @JsonIgnoreProperties(value = {"gender","email","phone","subject"})
+    @JsonIgnoreProperties(value = {"gender", "email", "phone", "subject"})
     private Teacher teacher;
 
     @ManyToOne

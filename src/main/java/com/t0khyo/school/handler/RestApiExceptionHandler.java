@@ -38,13 +38,13 @@ public class RestApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String,String>> handleGenericException(Exception ex) {
-        Map<String, String> response = new HashMap<>();
-        // todo: this is for testing only!
-        response.put("message", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<Map<String,String>> handleGenericException(Exception ex) {
+//        Map<String, String> response = new HashMap<>();
+//        // todo: this is for testing only!
+//        response.put("message", ex.getMessage());
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+//    }
 
 
 }

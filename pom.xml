@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.11</version>
+		<version>3.2.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.t0khyo</groupId>
@@ -17,20 +17,69 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		<!-- spring boot starter dependencies -->
+
+		<!-- Data JPA: for persistence layer and Spring Data JPA repositories -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+
+		<!--Jackson: for json mapping -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+
+
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
+		<!-- validation: for validation support (e.g, Hibernate Validator)-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+			<version>3.2.2</version>
+		</dependency>
+
+		<!--  Web: for building web app, including RESTful application using spring MVC  -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		<!--  devtools: fast application restart and live reload  -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+		<!--  lombok: reduce boilerplate code, provides setters, getter and more using annotations  -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- MapStruct: for dto conversion operations -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>1.5.5.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>1.5.5.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- JWT -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
@@ -47,56 +96,44 @@
 			<version>0.11.5</version>
 		</dependency>
 
+		<!-- API documentation -->
 		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.3.0</version>
 		</dependency>
+
+		<!-- JSON PATCH -->
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<groupId>com.github.java-json-tools</groupId>
+			<artifactId>json-patch</artifactId>
+			<version>1.13</version>
 		</dependency>
+
+		<!--	TESTING		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jetbrains</groupId>
-			<artifactId>annotations</artifactId>
-			<version>13.0</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.modelmapper</groupId>
-			<artifactId>modelmapper</artifactId>
-			<version>3.1.1</version>
-		</dependency>
-        <dependency>
-            <groupId>com.t0khyo</groupId>
-            <artifactId>school</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
+			<groupId>org.springframework.restdocs</groupId>
+			<artifactId>spring-restdocs-mockmvc</artifactId>
 			<scope>test</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.github.java-json-tools/json-patch -->
+		<!-- SECURITY -->
 		<dependency>
-			<groupId>com.github.java-json-tools</groupId>
-			<artifactId>json-patch</artifactId>
-			<version>1.12</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
-
-    </dependencies>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.13.0</version>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>

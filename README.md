@@ -16,4 +16,4 @@ This application was inspired by my experiences at Aljahra'a Alahlya High School
 
 ## Database Schema
 
-![Database Schema](https://imgur.com/EYwAvM7)
+![Database Schema](./assest/schoo_db.png)

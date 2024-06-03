@@ -12,7 +12,7 @@ This application was inspired by my experiences at Aljahra'a Alahlya High School
 - **Guardian Management**: Associate guardians with students for better communication.
 - **Schedule Generation**: generate weekly lesson schedules for teachers and classrooms.
 - **Score Management**: Record and track student scores and grades.
-- - **Attendance Tracking**: Automated attendance records with CRON job scheduling.
+- **Attendance Tracking**: Automated attendance records with CRON job scheduling.
 
 ## Database Schema
 
